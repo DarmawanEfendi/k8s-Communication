@@ -1,0 +1,7 @@
+{
+    "name": "application RCS",
+    "data": {
+        "value": "override example value from config data",
+        "status": "OVERRIDE"
+    }
+}

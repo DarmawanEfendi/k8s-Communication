@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rcs-app
+spec:
+  selector:
+    matchLabels:
+      run: rcs-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: rcs-app
+    spec:
+      containers:
+        - name: rcs-app
+          image: svc_rcs:v1.0.1
+          env:
+            - name: CONFIG_PATH
+              value: /etc/config
+            - name: CONFIG_FILE_NAME
+              value: config.json
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /etc/config
+              name: configmap-volume
+      volumes:
+        - name: configmap-volume
+          configMap:
+            name: json-configmap
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rcs-app
+  labels:
+    run: rcs-app
+spec:
+  type: NodePort
+  externalTrafficPolicy: Cluster
+  selector:
+    run: rcs-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
