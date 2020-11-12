@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-svc
+spec:
+  type: NodePort
+  ports:
+    - port: 3000
+      targetPort: 3000
+  selector:
+    app: ingress-svc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingress-svc
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ingress-svc
+  template:
+    metadata:
+      labels:
+        app: ingress-svc
+    spec:
+      containers:
+      - name: ingress-svc
+        image: darmawan/k8scom_si:v1.0.0
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 3000
+        command: ["node", "index.js"]

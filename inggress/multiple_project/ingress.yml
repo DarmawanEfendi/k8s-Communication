@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ex-ingress-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  rules:
+    - host: ex-ingress.wehelpyou.xyz
+      http:
+        paths:
+          - path: /v1/(.*)
+            pathType: Prefix
+            backend:
+              serviceName: ingress-svc1
+              servicePort: 3001
+          - path: /v2/(.*)
+            pathType: Prefix
+            backend:
+              serviceName: ingress-svc2
+              servicePort: 3002

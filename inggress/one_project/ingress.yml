@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ex-ingress-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: ex-ingress.wehelpyou.xyz
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: ingress-svc
+              servicePort: 3000
